@@ -3,6 +3,7 @@ const router = express.Router();
 
 const Recipe = require("./recipe-model");
 
+//Post new Recipe
 router.post("/", (req, res) => {
   Recipe.add(req.body)
     .then((recipe) => {
@@ -18,6 +19,7 @@ router.post("/", (req, res) => {
     });
 });
 
+// Get all Recipes
 router.get("/", async (req, res) => {
   try {
     const data = await Recipe.getRecipes();
@@ -27,23 +29,40 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Get Recipe by Id
 router.get("/:id", (req, res) => {
   Recipe.findById(req.params.id)
     .then((recipe) => {
       res.status(200).json(recipe);
     })
     .catch((err) => {
-      res.status(500).json({ eror: err.message });
+      res.status(500).json({ error: err.message });
     });
 });
 
-router.get("/:id/shoppingList", async (req, res) => {
+// Add Ingredient for Recipe item
+router.post("/:id/shoppingList", (req, res) => {
   const { id } = req.params;
 
+  Recipe.addToShoppingList(req.body)
+    .then((ingredients) => {
+      if (ingredients.length) {
+        res.status(200).json(ingredients);
+      } else {
+        res.status(404).json({ message: "Add ingredient" });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
+});
+
+// Get Ingredients for Recipe Item
+router.get("/:id/shoppingList", async (req, res) => {
   Recipe.getShoppingList(id)
     .then((ingredients) => {
       if (ingredients.length) {
-        res.json(ingredients);
+        res.status(201).json(ingredients);
       } else {
         res
           .status(404)
@@ -55,6 +74,20 @@ router.get("/:id/shoppingList", async (req, res) => {
     });
 });
 
+// addInstructions
+router.post("/:id/instructions", (req, res) => {
+  const { id } = req.params;
+
+  Recipe.addToInstructions(req.body)
+    .then((step) => {
+      res.status(200).json(step);
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
+});
+
+// getInstructions
 router.get("/:id/instructions", (req, res) => {
   const { id } = req.params;
 
@@ -73,6 +106,8 @@ router.get("/:id/instructions", (req, res) => {
     });
 });
 
+//editRecipe
+
 router.put("/:id", (req, res) => {
   Recipe.edit(req.params.id, req.body)
     .then((editedRecipe) => {
@@ -83,11 +118,25 @@ router.put("/:id", (req, res) => {
     });
 });
 
+//deleteRecipe
 router.delete("/:id", (req, res) => {
   const { id } = req.params;
   Recipe.remove(id)
     .then(() => {
       res.status(200).json({ message: `Recipe ${id} has been removed` });
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
+});
+
+//Find by category
+router.post("/category", (req, res) => {
+  const { category } = req.body;
+
+  Recipe.findBy({ category: category })
+    .then((data) => {
+      res.status(200).json(data);
     })
     .catch((err) => {
       res.status(500).json({ error: err.message });
