@@ -1,9 +1,8 @@
 const db = require("../../data/dbConfig");
 
 module.exports = {
-  async add(recipe) {
-    const [id] = await db("recipes").insert(recipe, "id");
-    return findById(id);
+  add(recipe) {
+    return db("recipes").insert(recipe, "id");
   },
 
   getRecipes() {
