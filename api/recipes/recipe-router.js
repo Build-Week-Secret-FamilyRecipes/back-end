@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const jwt = require("jsonwebtoken");
 
 const Recipe = require("./recipe-model");
 
@@ -20,14 +21,18 @@ const Recipe = require("./recipe-model");
 // });
 router.post("/", (req, res) => {
   const token = req.headers.authorization;
-
-  Recipe.add(req.body)
-    .then((newRecipe) => {
-      res.status(201).json(newRecipe);
-    })
-    .catch((err) => {
-      res.status(500).json({ err: err.message });
-    });
+  if (token) {
+    const { id } = jwt.decode(token);
+    Recipe.add(req.body)
+      .then((newRecipe) => {
+        res.status(201).json(newRecipe);
+      })
+      .catch((err) => {
+        res.status(500).json({ err: err.message });
+      });
+  } else {
+    res.status(400).json({ message: "You must be logged in to do that." });
+  }
 });
 
 // Get all Recipes
