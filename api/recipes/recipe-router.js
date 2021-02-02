@@ -4,18 +4,27 @@ const router = express.Router();
 const Recipe = require("./recipe-model");
 
 //Post new Recipe
+// router.post("/", (req, res) => {
+//   Recipe.add(req.body)
+//     .then((recipe) => {
+//       if (recipe.recipe_private == 0) {
+//         recipe.recipe_private = false;
+//       } else if (recipe.recipe_private == 1) {
+//         recipe.recipe_private = true;
+//       }
+//       res.status(201).json(recipe);
+//     })
+//     .catch((err) => {
+//       res.status(500).json(err.message);
+//     });
+// });
 router.post("/", (req, res) => {
   Recipe.add(req.body)
-    .then((recipe) => {
-      if (recipe.recipe_private == 0) {
-        recipe.recipe_private = false;
-      } else if (recipe.recipe_private == 1) {
-        recipe.recipe_private = true;
-      }
-      res.status(201).json(recipe);
+    .then((newRecipe) => {
+      res.status(201).json(newRecipe);
     })
     .catch((err) => {
-      res.status(500).json(err.message);
+      res.status(500).json({ err: err.message });
     });
 });
 

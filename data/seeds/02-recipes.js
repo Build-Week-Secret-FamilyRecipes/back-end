@@ -12,7 +12,7 @@ exports.seed = function (knex) {
           ingredients:
             "1. Pasta \n 2. Shredded Cheese \n 3. Your favorite tomato sauce",
           steps:
-            "1. Boil pasta in pot \n 2. Once done boiling drain pasta and heat up sauce on top of pasta \n Take pasta and sauce off of burner, put in bowl and serve. \n 4. Use cheese as needed. ",
+            "1. Boil pasta in pot \n 2. Once done boiling drain pasta and heat up sauce on top of pasta \n 3. Take pasta and sauce off of burner, put in bowl and serve. \n 4. Use cheese as needed. ",
         },
       ]);
     });
