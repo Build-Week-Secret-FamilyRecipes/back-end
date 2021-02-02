@@ -19,6 +19,8 @@ const Recipe = require("./recipe-model");
 //     });
 // });
 router.post("/", (req, res) => {
+  const token = req.headers.authorization;
+
   Recipe.add(req.body)
     .then((newRecipe) => {
       res.status(201).json(newRecipe);
