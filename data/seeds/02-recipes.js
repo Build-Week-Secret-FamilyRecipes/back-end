@@ -17,3 +17,5 @@ exports.seed = function (knex) {
       ]);
     });
 };
+
+//recipes data
