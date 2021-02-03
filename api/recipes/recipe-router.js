@@ -31,23 +31,17 @@ router.post("/", (req, res) => {
 
 // Get all Recipes
 router.get("/", (req, res) => {
-  const token = req.headers.authorization;
-  if (token) {
-    const { id } = jwt.decode(token);
-    Recipe.getRecipes(id)
-      .then((recipes) => {
-        if (recipes) {
-          res.json(recipes);
-        } else {
-          res.status(401).json({ message: "No recipes created" });
-        }
-      })
-      .catch((err) => {
-        res.status(500).json({ error: error.message });
-      });
-  } else {
-    res.status(400).json({ message: "Login!" });
-  }
+  Recipe.getRecipes(id)
+    .then((recipes) => {
+      if (recipes) {
+        res.json(recipes);
+      } else {
+        res.status(401).json({ message: "No recipes created" });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ error: error.message });
+    });
 });
 
 // Get Recipe by Id
