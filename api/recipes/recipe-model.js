@@ -48,15 +48,15 @@ module.exports = {
   },
 
   remove(id) {
-    return db("recipes").where({ id }).del();
+    return db("recipes").where({ recipe_id }).del();
   },
 
   edit(id, changes) {
-    return db("recipes").where({ id }).update(changes);
+    return db("recipes").where({ recipe_id }).update(changes);
   },
 
   findById(id) {
-    return db("recipes").where({ id }).first;
+    return db("recipes").where({ recipe_id }).first;
   },
 
   findBy(filter) {

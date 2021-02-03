@@ -4,21 +4,7 @@ const jwt = require("jsonwebtoken");
 
 const Recipe = require("./recipe-model");
 
-//Post new Recipe
-// router.post("/", (req, res) => {
-//   Recipe.add(req.body)
-//     .then((recipe) => {
-//       if (recipe.recipe_private == 0) {
-//         recipe.recipe_private = false;
-//       } else if (recipe.recipe_private == 1) {
-//         recipe.recipe_private = true;
-//       }
-//       res.status(201).json(recipe);
-//     })
-//     .catch((err) => {
-//       res.status(500).json(err.message);
-//     });
-// });
+// Post recipe
 router.post("/", (req, res) => {
   Recipe.add(req.body)
     .then((newRecipe) => {
@@ -46,7 +32,7 @@ router.get("/", (req, res) => {
 
 // Get Recipe by Id
 router.get("/:id", (req, res) => {
-  Recipe.findById(req.params.id)
+  Recipe.findById(req.params.recipe_id)
     .then((recipe) => {
       res.status(200).json(recipe);
     })
@@ -124,7 +110,7 @@ router.get("/:id/instructions", (req, res) => {
 //editRecipe
 
 router.put("/:id", (req, res) => {
-  Recipe.edit(req.params.id, req.body)
+  Recipe.edit(req.params.recipe_id, req.body)
     .then((editedRecipe) => {
       res.status(200).json(editedRecipe);
     })
@@ -135,10 +121,10 @@ router.put("/:id", (req, res) => {
 
 //deleteRecipe
 router.delete("/:id", (req, res) => {
-  const { id } = req.params;
-  Recipe.remove(id)
+  const { recipe_id } = req.params;
+  Recipe.remove(recipe_id)
     .then(() => {
-      res.status(200).json({ message: `Recipe ${id} has been removed` });
+      res.status(200).json({ message: `Recipe ${recipe_id} has been removed` });
     })
     .catch((err) => {
       res.status(500).json({ error: err.message });
@@ -150,6 +136,18 @@ router.post("/category", (req, res) => {
   const { category } = req.body;
 
   Recipe.findBy({ category: category })
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
+});
+
+router.post("/name", (req, res) => {
+  const { recipe_name } = req.body;
+
+  Recipe.findBy({ recipe_name: recipe_name })
     .then((data) => {
       res.status(200).json(data);
     })
