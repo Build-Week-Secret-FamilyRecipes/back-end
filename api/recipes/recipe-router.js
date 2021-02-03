@@ -20,19 +20,13 @@ const Recipe = require("./recipe-model");
 //     });
 // });
 router.post("/", (req, res) => {
-  const token = req.headers.authorization;
-  if (token) {
-    const { id } = jwt.decode(token);
-    Recipe.add(req.body)
-      .then((newRecipe) => {
-        res.status(201).json(newRecipe);
-      })
-      .catch((err) => {
-        res.status(500).json({ err: err.message });
-      });
-  } else {
-    res.status(400).json({ message: "You must be logged in to do that." });
-  }
+  Recipe.add(req.body)
+    .then((newRecipe) => {
+      res.status(201).json(newRecipe);
+    })
+    .catch((err) => {
+      res.status(500).json({ err: err.message });
+    });
 });
 
 // Get all Recipes

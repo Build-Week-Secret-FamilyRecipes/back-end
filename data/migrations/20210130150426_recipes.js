@@ -6,8 +6,8 @@ exports.up = function (knex) {
     table.string("category", 128).notNullable();
     table.string("time", 128).notNullable();
     table.boolean("recipe_private").notNullable().defaultTo(false);
-    table.text("ingredients").notNullable();
-    table.text("steps").notNullable();
+    table.string("ingredients").notNullable();
+    table.string("steps").notNullable();
   });
 };
 
