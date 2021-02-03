@@ -12,7 +12,7 @@ const UserRouter = require("./users/user-router");
 server.use(express.json());
 server.use(helmet());
 server.use(cors());
-server.use("/api/recipes", restricted, RecipeRouter);
+server.use("/api/recipes", RecipeRouter);
 server.use("/api/auth", AuthRouter);
 server.use("/api/users", restricted, UserRouter);
 
