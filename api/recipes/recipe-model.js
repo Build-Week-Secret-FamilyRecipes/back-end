@@ -47,15 +47,15 @@ module.exports = {
       });
   },
 
-  remove(id) {
+  remove(recipe_id) {
     return db("recipes").where({ recipe_id }).del();
   },
 
-  edit(id, changes) {
+  edit(recipe_id, changes) {
     return db("recipes").where({ recipe_id }).update(changes);
   },
 
-  findById(id) {
+  findById(recipe_id) {
     return db("recipes").where({ recipe_id }).first;
   },
 
