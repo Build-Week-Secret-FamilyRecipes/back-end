@@ -31,7 +31,7 @@ router.post("/", (req, res) => {
 
 // Get all Recipes
 router.get("/", (req, res) => {
-  Recipe.getRecipes(id)
+  Recipe.getRecipes(req.body)
     .then((recipes) => {
       if (recipes) {
         res.json(recipes);
