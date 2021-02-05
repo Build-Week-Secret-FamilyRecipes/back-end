@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
+const Joi = require("joi");
 
 const Recipe = require("./recipe-model");
 
@@ -110,15 +111,24 @@ router.get("/:id/instructions", (req, res) => {
 //editRecipe
 
 router.put("/:id", (req, res) => {
-  Recipe.edit(req.params.recipe_id, req.body)
-    .then((editedRecipe) => {
-      res.status(200).json(editedRecipe);
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err.message });
-    });
+  const recipe = Recipe.findBy((r) => r.id === parseInt(req.params.recipe_id));
+  if (!recipe) res.status(404).send("The course with the given id was missing");
+
+  const { error } = validateRecipe(req.body);
+  if (error) {
+    res.status(400).send(error.details[0].message);
+    return;
+  }
+  recipe.body = req.body;
+  res.send(recipe);
 });
 
+function validateRecipe(recipe) {
+  const schema = {
+    name: Joi.string().min(1).required(),
+  };
+  return Joi.validate(recipe, schema);
+}
 //deleteRecipe
 router.delete("/:id", (req, res) => {
   const { recipe_id } = req.params;
